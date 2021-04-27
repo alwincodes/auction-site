@@ -1,3 +1,21 @@
 body {
-    padding: 10px;
+  padding: 10px;
+}
+
+.products {
+  margin: 1em;
+  border-style: solid;
+}
+.product_img {
+  display: inline;
+  width: 20em;
+  padding: 0.4em;
+}
+.prod_info {
+  display: inline;
+  position: relative;
+
+  width: 30em;
+  padding: 0.4em;
+  margin: 0;
 }

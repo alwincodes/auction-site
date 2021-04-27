@@ -15,7 +15,10 @@ class AddListingForm(ModelForm):
         fields = ['title', 'description', 'startPrice', 'category','imageUrl']
 
 def index(request):
-    return render(request, "auctions/index.html")
+    listingData = Listing.objects.all()
+    return render(request, "auctions/index.html", {
+        "listings" : listingData
+    })
 
 
 def login_view(request):
@@ -82,9 +85,17 @@ def addListing(request):
         if form.is_valid:
             data = form.save(commit=False)
             data.creator = request.user
+            data.currentPrice = data.startPrice
             data.save()
            
             return render(request, "auctions/addlisting.html", {
             "listingform" : AddListingForm(),
             "msg" : "Listing Added"
+           })
+    
+def seeListing(request, listingid):
+    if(listingid != None):
+        listingInfo = Listing.objects.get(pk = listingid)
+        return render(request, "auctions/viewlisting.html", {
+        "prodinfo" : listingInfo
         })

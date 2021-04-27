@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>View Listings</h2>
+
+{% if prodinfo != None %}
+    <div class="products">
+        <img class="product_img" src="{{prodinfo.imageUrl}}" alt="Product image">
+        <div class="prod_info">
+            <b>{{prodinfo.title}}</b>
+            Start Price <i>{{prodinfo.startPrice}}</i>
+            Current Price<i>{{prodinfo.currentPrice}}</i>
+            Description <br>
+            <i>{{prodinfo.description}}</i>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

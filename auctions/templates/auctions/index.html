@@ -3,5 +3,18 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    TODO
+    {% for listing in listings %}
+    <a href="{% url 'viewlisting' listing.id %}">
+        <div class="products">
+            <img class="product_img" src="{{listing.imageUrl}}" alt="Product image">
+            <div class="prod_info">
+                <b>{{listing.title}}</b>
+                Start Price <i>{{listing.startPrice}}</i>
+                Current Price<i>{{listing.currentPrice}}</i>
+                Description <br>
+                <i>{{listing.description}}</i>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
 {% endblock %}
