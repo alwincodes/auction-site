@@ -3,7 +3,9 @@
 {% block body %}
 <h2>Add New Listings</h2>
 
+    {{msg}}
     <form action="{% url 'addlisting' %}" method="post">
+        {% csrf_token %}
         {{listingform}}
         <input type="submit" value="Add Listing">
     </form>

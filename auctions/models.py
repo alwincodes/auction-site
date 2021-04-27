@@ -15,7 +15,7 @@ class Category(models.Model):
     category = models.CharField(verbose_name="category", max_length=30)
     
     def __str__(self):
-        return f"(self.Category)"
+        return f"{self.category}"
 
 class Listing(models.Model):
     title = models.CharField(max_length=30)
@@ -31,7 +31,7 @@ class Listing(models.Model):
     buyer = models.ForeignKey(User, on_delete=PROTECT, blank=True, null=True)
 
     def __str__(self):
-        return f"(self.title)"
+        return f"{self.title}"
 
 class Bids(models.Model):
     user = ForeignKey(User, on_delete=PROTECT, null=True)

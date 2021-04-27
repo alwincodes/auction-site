@@ -12,7 +12,7 @@ from .models import *
 class AddListingForm(ModelForm):
     class Meta:
         model = Listing
-        fields = ['title', 'description', 'startPrice', 'category']
+        fields = ['title', 'description', 'startPrice', 'category','imageUrl']
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -69,13 +69,22 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-@login_required
+@login_required(login_url="login")
 def addListing(request):
+    print(request.user)
     if(request.method == "GET"):
         return render(request, "auctions/addlisting.html", {
             "listingform" : AddListingForm()
         })
 
     if request.method == "POST":
-        print("in here")
-        pass
+        form= AddListingForm(request.POST or None)
+        if form.is_valid:
+            data = form.save(commit=False)
+            data.creator = request.user
+            data.save()
+           
+            return render(request, "auctions/addlisting.html", {
+            "listingform" : AddListingForm(),
+            "msg" : "Listing Added"
+        })
