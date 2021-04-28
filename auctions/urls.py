@@ -11,6 +11,9 @@ urlpatterns = [
     path("viewlisting/<int:listingid>", views.seeListing, name="viewlisting"),
     path("watchlist", views.watchlist, name="watchlist"),
     path("comment/<int:id>", views.addComment, name="addcomment")
+    # toggle watchlist
+    # close listing // by creator
+    # bid on a listing
 
     
 ]

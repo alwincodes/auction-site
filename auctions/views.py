@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.db.models import fields
 from django.forms.models import ModelForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -17,6 +18,11 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comments
         fields = ['content']
+
+class NewBidForm(ModelForm):
+    class Meta:
+        model = Bids
+        fields = ['offerPrice']
 
 def index(request):
     listingData = Listing.objects.all()
@@ -100,7 +106,7 @@ def addListing(request):
 def seeListing(request, listingid):
     if(listingid != None):
         listingInfo = Listing.objects.get(pk = listingid)
-        comments = listingInfo.get_comments.all()
+        comments = listingInfo.get_comments.all().order_by('-id')
         watcher = False
         creator = False
         buyer = False
@@ -131,6 +137,7 @@ def seeListing(request, listingid):
         
         return render(request, "auctions/viewlisting.html", {
         "commentform" : CommentForm,
+        "bidform" : NewBidForm,
         "prodinfo" : listingInfo,
         "comments" : comments,
         "creator" : creator,
