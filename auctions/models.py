@@ -43,6 +43,6 @@ class Bids(models.Model):
 
 class Comments(models.Model):
     user = ForeignKey(User, on_delete=CASCADE, null=True)
-    listing = ForeignKey(Listing, on_delete=CASCADE, null=True)
+    listing = ForeignKey(Listing, on_delete=CASCADE, null=True, related_name="get_comments")
     content = models.TextField(max_length=200)
     date = models.DateField(default=now)

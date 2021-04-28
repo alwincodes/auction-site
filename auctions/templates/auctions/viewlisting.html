@@ -14,5 +14,34 @@
             <i>{{prodinfo.description}}</i>
         </div>
     </div>
-{% endif %}
+     {% if creator == True %}
+     close Listings
+     {% elif watcher == True %}
+     remove from watchlist
+     bid for a rate
+     {% elif buyer == True %}
+     congrats you won the auctions
+     {% else %}
+     add to watchlist
+     bid for a rate
+     {% endif %}
+     <!--comment input-->
+    <h5>Post your comment below</h5>
+    <form action="{% url 'addcomment' prodinfo.id %}" method="post">
+        {% csrf_token %}
+        {{commentform}}
+        <input type="submit" value="Post Comment">
+    </form>
+
+    {% for comment in comments%}
+    <div class="products">
+        {{comment.user}}
+        {{comment.date}}
+        {{comment.content}}
+    </div>
+    {% empty %}
+    No comments so far!
+    {% endfor %}
+
+    {% endif %}
 {% endblock %}

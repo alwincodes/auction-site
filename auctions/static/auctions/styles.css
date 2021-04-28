@@ -14,7 +14,7 @@ body {
 .prod_info {
   display: inline;
   position: relative;
-
+  height: max-content;
   width: 30em;
   padding: 0.4em;
   margin: 0;

@@ -13,6 +13,10 @@ class AddListingForm(ModelForm):
     class Meta:
         model = Listing
         fields = ['title', 'description', 'startPrice', 'category','imageUrl']
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['content']
 
 def index(request):
     listingData = Listing.objects.all()
@@ -96,6 +100,63 @@ def addListing(request):
 def seeListing(request, listingid):
     if(listingid != None):
         listingInfo = Listing.objects.get(pk = listingid)
+        comments = listingInfo.get_comments.all()
+        watcher = False
+        creator = False
+        buyer = False
+        """
+        More logic needs to be added
+
+        1 if user is logged then they can add watchlist / remove wishlist
+        2 sign in user can bid on item if price is larger than current offer
+        3 if owner of listing then ability to close it
+        4 ability to add comments
+        5 if a user won an auction it should say so
+
+        """
+        #checking if the user is logged in
+        if request.user != None:
+            if request.user in listingInfo.watchers.all():
+                watcher = True
+                print("current user is a watcher")
+        
+            if request.user == listingInfo.creator:
+                creator = True
+                print("current user is the creator")
+                pass
+            if listingInfo.isActive == False and request.user == listingInfo.buyer:
+                buyer = True
+                print("current user got the auction")
+                pass
+        
         return render(request, "auctions/viewlisting.html", {
-        "prodinfo" : listingInfo
+        "commentform" : CommentForm,
+        "prodinfo" : listingInfo,
+        "comments" : comments,
+        "creator" : creator,
+        "watcher" : watcher,
+        "buyer" : buyer
         })
+
+
+@login_required(login_url="login")
+def watchlist(request):
+    user = request.user
+    watchlist = user.watched_listings.all()
+    return render(request, "auctions/watchlist.html", {
+        "watchlist" : watchlist
+    })
+
+@login_required(login_url="login")
+def addComment(request, id):
+    if request.method == "POST":
+        listing = Listing.objects.get(id = id)
+        user = request.user
+        form = CommentForm(request.POST)
+        if form.is_valid:
+            data = form.save(commit=False)
+            data.user = user
+            data.listing = listing
+            data.save()
+            return HttpResponseRedirect(reverse("viewlisting", args=[id]))
+    
