@@ -10,8 +10,11 @@ urlpatterns = [
     path("addlisting", views.addListing, name="addlisting"),
     path("viewlisting/<int:listingid>", views.seeListing, name="viewlisting"),
     path("watchlist", views.watchlist, name="watchlist"),
-    path("comment/<int:id>", views.addComment, name="addcomment")
-    # toggle watchlist
+    path("comment/<int:id>", views.addComment, name="addcomment"),
+    path("watchlist/<int:id>", views.toggleWatchlist, name="togglewatchlist"),
+    path("createbid/<int:id>", views.createBid, name="bid")
+
+    
     # close listing // by creator
     # bid on a listing
 

@@ -37,7 +37,7 @@ class Bids(models.Model):
     user = ForeignKey(User, on_delete=PROTECT, null=True)
     listing = ForeignKey(Listing, on_delete=PROTECT)
     offerPrice = models.FloatField()
-    date = models.DateField(now)
+    date = models.DateField(default=now)
 
 
 

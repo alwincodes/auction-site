@@ -167,3 +167,32 @@ def addComment(request, id):
             data.save()
             return HttpResponseRedirect(reverse("viewlisting", args=[id]))
     
+@login_required(login_url="login")
+def toggleWatchlist(request, id):
+    user = request.user
+    listing = Listing.objects.get(id = id)
+    if user in listing.watchers.all():
+        listing.watchers.remove(user)
+    else:
+        listing.watchers.add(user)
+    
+    return HttpResponseRedirect(reverse("viewlisting", args=[id]))
+
+@login_required(login_url="login")
+def createBid(request, id):
+    if request.method == "POST":
+        bidStatus = False
+        listing = Listing.objects.get(id = id)
+        newBidRate = float(request.POST["bidrate"])
+        print(listing.currentPrice, newBidRate)
+        if listing.currentPrice >= newBidRate:
+            print("cant make the bid too low price")
+        else:
+            print("yes can make bid")
+            listing.currentPrice = newBidRate
+            listing.save()
+            Bids(user = request.user, listing = listing, offerPrice = newBidRate).save()
+
+            bidStatus = True
+    return HttpResponseRedirect(reverse("viewlisting", args=[id]))
+        

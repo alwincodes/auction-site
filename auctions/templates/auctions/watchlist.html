@@ -4,7 +4,7 @@
 <h2>watchlist</h2>
 <ul>
 {% for item in watchlist %}
-<li><a href="{% url 'viewlisting' item.id %}">{{item.name}}</a></li>
+<li><a href="{% url 'viewlisting' item.id %}">{{item.title}}</a></li>
 {% empty %}
 <h5>Empty watchlist add some items!</h5>
 {% endfor %}

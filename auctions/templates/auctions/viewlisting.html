@@ -17,12 +17,16 @@
      {% if creator == True %}
      <a href="">Close Listing</a>
      {% elif watcher == True %}
-    <a href="">Remove From Watchlist</a>
-     bid for a rate
+    <a href="{% url 'togglewatchlist' prodinfo.id %}">Remove From Watchlist</a>
+     <form action="{% url 'bid' prodinfo.id %}" method="post">
+         {% csrf_token %}
+         <input type="number" name="bidrate" required>
+         <input type="submit" value="Submit bid">
+     </form>
      {% elif buyer == True %}
-     congrats you won the auctions
+     congrats you won the auctions!!
      {% else %}
-     add to watchlist
+    <a href="{% url 'togglewatchlist' prodinfo.id %}">Add To Watchlist</a>
      bid for a rate
      {% endif %}
      <!--comment input-->
