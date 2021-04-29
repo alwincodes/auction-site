@@ -2,6 +2,12 @@
 
 {% block body %}
 <h2>View Listings</h2>
+{% if prodinfo.isActive == False %}
+<h5 style="color: red;">Listing Closed</h5>
+{% endif %}
+{% if buyer == True %}
+<h5 style="color: green;">Your bid won</h5>
+{% endif %}
 
 {% if prodinfo != None %}
     <div class="products">
@@ -14,38 +20,40 @@
             <i>{{prodinfo.description}}</i>
         </div>
     </div>
-     {% if creator == True %}
-     <a href="">Close Listing</a>
-     {% elif watcher == True %}
-    <a href="{% url 'togglewatchlist' prodinfo.id %}">Remove From Watchlist</a>
-     <form action="{% url 'bid' prodinfo.id %}" method="post">
-         {% csrf_token %}
-         <input type="number" name="bidrate" required>
-         <input type="submit" value="Submit bid">
-     </form>
-     {% elif buyer == True %}
-     congrats you won the auctions!!
-     {% else %}
-    <a href="{% url 'togglewatchlist' prodinfo.id %}">Add To Watchlist</a>
-     bid for a rate
-     {% endif %}
-     <!--comment input-->
-    <h5>Post your comment below</h5>
-    <form action="{% url 'addcomment' prodinfo.id %}" method="post">
-        {% csrf_token %}
-        {{commentform}}
-        <input type="submit" value="Post Comment">
-    </form>
-
-    {% for comment in comments%}
-    <div class="products">
-        {{comment.user}}
-        {{comment.date}}
-        {{comment.content}}
-    </div>
-    {% empty %}
-    No comments so far!
-    {% endfor %}
-
+    {% if prodinfo.isActive == True %}
+        {% if creator == True %}
+        <a href="{% url 'closelisting' prodinfo.id %}">Close Listing</a>
+        {% elif watcher == True %}
+        <a href="{% url 'togglewatchlist' prodinfo.id %}">Remove From Watchlist</a>
+        <form action="{% url 'bid' prodinfo.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="bidrate" required>
+            <input type="submit" value="Submit bid">
+        </form>
+        {% else %}
+        <a href="{% url 'togglewatchlist' prodinfo.id %}">Add To Watchlist</a>
+        <form action="{% url 'bid' prodinfo.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="bidrate" required>
+            <input type="submit" value="Submit bid">
+        </form> 
+        {% endif %}
+        <!--comment input-->
+        <h5>Post your comment below</h5>
+        <form action="{% url 'addcomment' prodinfo.id %}" method="post">
+            {% csrf_token %}
+            {{commentform}}
+            <input type="submit" value="Post Comment">
+        </form>
+        {% endif %}
+        {% for comment in comments%}
+        <div class="products">
+            {{comment.user}}
+            {{comment.date}}
+            {{comment.content}}
+        </div>
+        {% empty %}
+        No comments so far!
+        {% endfor %}
     {% endif %}
 {% endblock %}

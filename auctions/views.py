@@ -195,4 +195,15 @@ def createBid(request, id):
 
             bidStatus = True
     return HttpResponseRedirect(reverse("viewlisting", args=[id]))
-        
+    
+def closeListing(request, id):
+    listing = Listing.objects.get(id = id)
+    if listing.creator == request.user:
+        #lets close the listing
+        listing.isActive = False
+        lastBid = Bids.objects.last()
+        listing.buyer = lastBid.user
+        listing.save()
+
+    return HttpResponseRedirect(reverse("viewlisting", args=[id]))
+    
