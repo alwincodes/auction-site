@@ -13,7 +13,9 @@ urlpatterns = [
     path("comment/<int:id>", views.addComment, name="addcomment"),
     path("watchlist/<int:id>", views.toggleWatchlist, name="togglewatchlist"),
     path("createbid/<int:id>", views.createBid, name="bid"),
-    path("close/<int:id>", views.closeListing, name="closelisting")
+    path("close/<int:id>", views.closeListing, name="closelisting"),
+    path("category", views.category, name = "category"),
+    path("list/<str:category>", views.categoryView, name = "viewcategory")
 
     
     # close listing // by creator

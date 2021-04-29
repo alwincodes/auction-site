@@ -25,11 +25,21 @@ class NewBidForm(ModelForm):
         fields = ['offerPrice']
 
 def index(request):
-    listingData = Listing.objects.all()
+    listingData = Listing.objects.filter(isActive = True)
     return render(request, "auctions/index.html", {
         "listings" : listingData
     })
-
+def category(request):
+    category = Category.objects.all()
+    return render(request, "auctions/category.html", {
+        "categories" : category
+    })
+def categoryView(request, category):
+    categoryobj = Category.objects.filter(category = category).first()
+    listingData = categoryobj.related_listings.filter(isActive = True)
+    return render(request, "auctions/index.html", {
+        "listings" : listingData
+    })
 
 def login_view(request):
     if request.method == "POST":
